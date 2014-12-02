@@ -1,5 +1,4 @@
 org.diirt.datasource
-org.diirt.datasource.ca
 org.diirt.datasource.expression
 org.diirt.datasource.extra
 org.diirt.datasource.file
@@ -9,9 +8,6 @@ org.diirt.datasource.graphene
 org.diirt.datasource.integration
 org.diirt.datasource.loc
 org.diirt.datasource.pods.web
-org.diirt.datasource.pva
-org.diirt.datasource.pva.adapters
-org.diirt.datasource.pva.formula
 org.diirt.datasource.sample
 org.diirt.datasource.sample.formula
 org.diirt.datasource.sample.graphene
@@ -42,10 +38,14 @@ org.diirt.pods.web.common
 org.diirt.service
 org.diirt.service.exec
 org.diirt.service.jdbc
-org.diirt.service.pva.rpcservice
-org.diirt.service.pva.rpcservice.rpcclient
+org.diirt.support.ca
 org.diirt.support.cf.formula
 org.diirt.support.cf.service
+org.diirt.support.pva
+org.diirt.support.pva.adapters
+org.diirt.support.pva.formula
+org.diirt.support.pva.rpcservice
+org.diirt.support.pva.rpcservice.rpcclient
 org.diirt.util.array
 org.diirt.util.concurrent
 org.diirt.util.config
