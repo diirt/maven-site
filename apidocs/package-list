@@ -4,6 +4,8 @@ org.diirt.datasource.extra
 org.diirt.datasource.file
 org.diirt.datasource.file.json
 org.diirt.datasource.formula
+org.diirt.datasource.formula.alarm
+org.diirt.datasource.formula.enums
 org.diirt.datasource.graphene
 org.diirt.datasource.integration
 org.diirt.datasource.loc
@@ -32,6 +34,8 @@ org.diirt.graphene.profile.impl
 org.diirt.graphene.profile.io
 org.diirt.graphene.profile.settings
 org.diirt.graphene.profile.utils
+org.diirt.javafx.tools
+org.diirt.javafx.util
 org.diirt.pods.common
 org.diirt.pods.web
 org.diirt.pods.web.common
