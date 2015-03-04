@@ -5,7 +5,11 @@ org.diirt.datasource.file
 org.diirt.datasource.file.json
 org.diirt.datasource.formula
 org.diirt.datasource.formula.alarm
-org.diirt.datasource.formula.enums
+org.diirt.datasource.formula.array
+org.diirt.datasource.formula.channel
+org.diirt.datasource.formula.venum
+org.diirt.datasource.formula.vstring
+org.diirt.datasource.formula.vtable
 org.diirt.datasource.graphene
 org.diirt.datasource.integration
 org.diirt.datasource.loc
