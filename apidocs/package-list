@@ -7,7 +7,9 @@ org.diirt.datasource.formula
 org.diirt.datasource.formula.alarm
 org.diirt.datasource.formula.array
 org.diirt.datasource.formula.channel
+org.diirt.datasource.formula.math
 org.diirt.datasource.formula.venum
+org.diirt.datasource.formula.vnumber
 org.diirt.datasource.formula.vstring
 org.diirt.datasource.formula.vtable
 org.diirt.datasource.graphene
