@@ -26,6 +26,7 @@ org.diirt.datasource.sys
 org.diirt.datasource.test
 org.diirt.datasource.timecache
 org.diirt.datasource.timecache.impl
+org.diirt.datasource.timecache.integration
 org.diirt.datasource.timecache.query
 org.diirt.datasource.timecache.source
 org.diirt.datasource.timecache.storage
