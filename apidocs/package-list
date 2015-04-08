@@ -21,6 +21,7 @@ org.diirt.datasource.sample.formula
 org.diirt.datasource.sample.graphene
 org.diirt.datasource.sample.jca
 org.diirt.datasource.sample.log
+org.diirt.datasource.sample.services.math
 org.diirt.datasource.sim
 org.diirt.datasource.sys
 org.diirt.datasource.test
