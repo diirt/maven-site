@@ -101,147 +101,149 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          <strong class="jxr_keyword">super</strong>.update(update);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          <strong class="jxr_keyword">if</strong>(update.getValueColorScheme() != <strong class="jxr_keyword">null</strong>){
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>              valueColorScheme = update.getValueColorScheme();
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>              valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>          }
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">if</strong> (update.getInterpolation() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>              interpolation = update.getInterpolation();
-<a class="jxr_linenumber" name="L100" href="#L100">100</a>         }
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">if</strong> (update.getDataReduction() != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L102" href="#L102">102</a>             reduction = update.getDataReduction();
-<a class="jxr_linenumber" name="L103" href="#L103">103</a>         }
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>         <strong class="jxr_keyword">if</strong> (update.getFocusPixelX()!= <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>             focusPixelX = update.getFocusPixelX();
-<a class="jxr_linenumber" name="L106" href="#L106">106</a>         }
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>         <strong class="jxr_keyword">if</strong> (update.getHighlightFocusValue()!= <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>             highlightFocusValue = update.getHighlightFocusValue();
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>         }
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>     }
-<a class="jxr_linenumber" name="L111" href="#L111">111</a> 
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment">     * Draws the graph on the given graphics context.</em>
-<a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment">     * </em>
-<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     * @param g the graphics on which to display the data</em>
-<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @param data the data to display</em>
-<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(Graphics2D g, <a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> data) {
-<a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">this</strong>.g = g;
-<a class="jxr_linenumber" name="L120" href="#L120">120</a>         
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         calculateLabels();
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         calculateGraphArea();        
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         drawBackground();
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         drawGraphArea();
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>         
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.getXValues());
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>         ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
-<a class="jxr_linenumber" name="L129" href="#L129">129</a> 
-<a class="jxr_linenumber" name="L130" href="#L130">130</a>         setClip(g);
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>         g.setColor(Color.BLACK);
-<a class="jxr_linenumber" name="L132" href="#L132">132</a> 
-<a class="jxr_linenumber" name="L133" href="#L133">133</a>         currentIndex = 0;
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>         currentScaledDiff = getImageWidth();
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>         drawValueExplicitLine(xValues, yValues, interpolation, reduction);
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>             focusValueIndex = xValues.getIndexes().getInt(currentIndex);
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>             <strong class="jxr_keyword">if</strong> (highlightFocusValue) {
-<a class="jxr_linenumber" name="L139" href="#L139">139</a>                 g.setColor(<strong class="jxr_keyword">new</strong> Color(0, 0, 0, 128));
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>                 <strong class="jxr_keyword">int</strong> x = (<strong class="jxr_keyword">int</strong>) scaledX(xValues.getDouble(currentIndex));
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>                 g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 g.drawLine(x, yAreaCoordStart, x, yAreaCoordEnd - 1);
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>             }
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>             focusValueIndex = -1;
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         }
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>     }
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(<a href="../../../org/diirt/graphene/GraphBuffer.html">GraphBuffer</a> buffer, <a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> data) {
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>        calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());  
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>        calculateGraphArea();
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>        
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>        <em class="jxr_comment">// TODO: make sure this is right</em>
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>              <strong class="jxr_keyword">if</strong> (datasetRange != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>                  valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>              }
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          }
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         <strong class="jxr_keyword">if</strong> (update.getInterpolation() != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>             interpolation = update.getInterpolation();
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         }
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         <strong class="jxr_keyword">if</strong> (update.getDataReduction() != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             reduction = update.getDataReduction();
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         }
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">if</strong> (update.getFocusPixelX()!= <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             focusPixelX = update.getFocusPixelX();
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         }
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">if</strong> (update.getHighlightFocusValue()!= <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>             highlightFocusValue = update.getHighlightFocusValue();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         }
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     }
+<a class="jxr_linenumber" name="L113" href="#L113">113</a> 
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     * Draws the graph on the given graphics context.</em>
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * </em>
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     * @param g the graphics on which to display the data</em>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment">     * @param data the data to display</em>
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(Graphics2D g, <a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> data) {
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">this</strong>.g = g;
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         calculateLabels();
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         calculateGraphArea();        
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         drawBackground();
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         drawGraphArea();
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.getXValues());
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
+<a class="jxr_linenumber" name="L131" href="#L131">131</a> 
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         setClip(g);
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         g.setColor(Color.BLACK);
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> 
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         currentIndex = 0;
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         currentScaledDiff = getImageWidth();
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         drawValueExplicitLine(xValues, yValues, interpolation, reduction);
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>             focusValueIndex = xValues.getIndexes().getInt(currentIndex);
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             <strong class="jxr_keyword">if</strong> (highlightFocusValue) {
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>                 g.setColor(<strong class="jxr_keyword">new</strong> Color(0, 0, 0, 128));
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                 <strong class="jxr_keyword">int</strong> x = (<strong class="jxr_keyword">int</strong>) scaledX(xValues.getDouble(currentIndex));
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>                 g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>                 g.drawLine(x, yAreaCoordStart, x, yAreaCoordEnd - 1);
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>             }
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>             focusValueIndex = -1;
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         }
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     }
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(<a href="../../../org/diirt/graphene/GraphBuffer.html">GraphBuffer</a> buffer, <a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> data) {
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>        calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());  
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>        calculateGraphArea();
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>        
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>        <a href="../../../org/diirt/graphene/GraphAreaData.html">GraphAreaData</a> area = <strong class="jxr_keyword">new</strong> <a href="../../../org/diirt/graphene/GraphAreaData.html">GraphAreaData</a>(); 
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>        area.setGraphBuffer(buffer);
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>        
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>        buffer.drawBackground(backgroundColor);
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>        <strong class="jxr_keyword">int</strong> areaRightPixel = getImageWidth() - 1 - rightMargin;
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>         area.setGraphPadding(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         area.setLabelMargin(xLabelMargin, yLabelMargin);
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         area.prepareLabels(labelFont, labelColor);
-<a class="jxr_linenumber" name="L165" href="#L165">165</a>         area.prepareGraphArea(false, referenceLineColor);
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>         area.drawGraphArea();
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>        
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>         <a href="../../../org/diirt/graphene/ProcessValue.html">ProcessValue</a> pv = <strong class="jxr_keyword">new</strong> <a href="../../../org/diirt/graphene/ProcessValue.html">ProcessValue</a>() {
-<a class="jxr_linenumber" name="L169" href="#L169">169</a> 
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>             @Override
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> processScaledValue(<strong class="jxr_keyword">int</strong> index, <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">double</strong> valueY, <strong class="jxr_keyword">double</strong> scaledX, <strong class="jxr_keyword">double</strong> scaledY) {
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>                 <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>                     <strong class="jxr_keyword">double</strong> scaledDiff = Math.abs(scaledX - focusPixelX);
-<a class="jxr_linenumber" name="L174" href="#L174">174</a>                     <strong class="jxr_keyword">if</strong> (scaledDiff &lt; currentScaledDiff) {
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>                         currentIndex = index;
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>                         currentScaledDiff = scaledDiff;
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>                     }
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>                 }
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             }
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         };
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>        
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>      
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>         buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">     * Draws a graph with multiple lines, each pertaining to a different set of data.</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">     * </em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     * @param g Graphics2D object used to perform drawing functions within draw.</em>
-<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     * @param data can not be null</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(Graphics2D g, List&lt;Point2DDataset&gt; data) {
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">this</strong>.g = g;
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <em class="jxr_comment">//Calculate range, range will end up being from the lowest point to highest in all of the given data.</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">for</strong>(<a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> dataPiece: data){
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>           <strong class="jxr_keyword">super</strong>.calculateRanges(dataPiece.getXStatistics().getRange(), dataPiece.getXDisplayRange(), dataPiece.getYStatistics().getRange(), dataPiece.getYDisplayRange());
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         }
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>         calculateLabels();
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         calculateGraphArea();
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         drawBackground();
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>         drawGraphArea();
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>         Range datasetRangeCheck = Ranges.range(0,data.size());
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>        <em class="jxr_comment">// TODO: make sure this is right</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>        
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>        <a href="../../../org/diirt/graphene/GraphAreaData.html">GraphAreaData</a> area = <strong class="jxr_keyword">new</strong> <a href="../../../org/diirt/graphene/GraphAreaData.html">GraphAreaData</a>(); 
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>        area.setGraphBuffer(buffer);
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>        
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>        buffer.drawBackground(backgroundColor);
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>        <strong class="jxr_keyword">int</strong> areaRightPixel = getImageWidth() - 1 - rightMargin;
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         area.setGraphPadding(leftAreaMargin, bottomAreaMargin, rightAreaMargin, topAreaMargin);
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         area.setLabelMargin(xLabelMargin, yLabelMargin);
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>         area.setRanges(getXPlotRange(), xValueScale, getYPlotRange(), yValueScale);
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         area.prepareLabels(labelFont, labelColor);
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         area.prepareGraphArea(false, referenceLineColor);
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         area.drawGraphArea();
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>        
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <a href="../../../org/diirt/graphene/ProcessValue.html">ProcessValue</a> pv = <strong class="jxr_keyword">new</strong> <a href="../../../org/diirt/graphene/ProcessValue.html">ProcessValue</a>() {
+<a class="jxr_linenumber" name="L171" href="#L171">171</a> 
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>             @Override
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> processScaledValue(<strong class="jxr_keyword">int</strong> index, <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">double</strong> valueY, <strong class="jxr_keyword">double</strong> scaledX, <strong class="jxr_keyword">double</strong> scaledY) {
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>                 <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>                     <strong class="jxr_keyword">double</strong> scaledDiff = Math.abs(scaledX - focusPixelX);
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>                     <strong class="jxr_keyword">if</strong> (scaledDiff &lt; currentScaledDiff) {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>                         currentIndex = index;
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>                         currentScaledDiff = scaledDiff;
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                     }
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                 }
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>             }
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         };
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>        
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>      
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>     }
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     * Draws a graph with multiple lines, each pertaining to a different set of data.</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     * </em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     * @param g Graphics2D object used to perform drawing functions within draw.</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a> <em class="jxr_javadoccomment">     * @param data can not be null</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> draw(Graphics2D g, List&lt;Point2DDataset&gt; data) {
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">this</strong>.g = g;
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>         
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <em class="jxr_comment">//Calculate range, range will end up being from the lowest point to highest in all of the given data.</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">for</strong>(<a href="../../../org/diirt/graphene/Point2DDataset.html">Point2DDataset</a> dataPiece: data){
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>           <strong class="jxr_keyword">super</strong>.calculateRanges(dataPiece.getXStatistics().getRange(), dataPiece.getXDisplayRange(), dataPiece.getYStatistics().getRange(), dataPiece.getYDisplayRange());
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         }
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         calculateLabels();
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>         calculateGraphArea();
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         drawBackground();
+<a class="jxr_linenumber" name="L204" href="#L204">204</a>         drawGraphArea();
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>         <em class="jxr_comment">//Set color scheme</em>
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         <strong class="jxr_keyword">if</strong>(valueColorSchemeInstance == <strong class="jxr_keyword">null</strong> || datasetRange == <strong class="jxr_keyword">null</strong> || datasetRange != datasetRangeCheck){
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>             datasetRange = datasetRangeCheck;
-<a class="jxr_linenumber" name="L209" href="#L209">209</a>             valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>         }
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>         <em class="jxr_comment">//Draw a line for each set of data in the data array.</em>
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>         <strong class="jxr_keyword">for</strong>(<strong class="jxr_keyword">int</strong> datasetNumber = 0; datasetNumber &lt; data.size(); datasetNumber++){
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>             SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getXValues());
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>             ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());        
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             setClip(g);
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>             g.setColor(<strong class="jxr_keyword">new</strong> Color(valueColorSchemeInstance.colorFor((<strong class="jxr_keyword">double</strong>)datasetNumber)));
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>             drawValueExplicitLine(xValues, yValues, interpolation, reduction);
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         }
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>     }
-<a class="jxr_linenumber" name="L220" href="#L220">220</a> 
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>     @Override
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> processScaledValue(<strong class="jxr_keyword">int</strong> index, <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">double</strong> valueY, <strong class="jxr_keyword">double</strong> scaledX, <strong class="jxr_keyword">double</strong> scaledY) {
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>             <strong class="jxr_keyword">double</strong> scaledDiff = Math.abs(scaledX - focusPixelX);
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>             <strong class="jxr_keyword">if</strong> (scaledDiff &lt; currentScaledDiff) {
-<a class="jxr_linenumber" name="L226" href="#L226">226</a>                 currentIndex = index;
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>                 currentScaledDiff = scaledDiff;
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>             }
-<a class="jxr_linenumber" name="L229" href="#L229">229</a>         }
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     }
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>     
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> currentIndex;
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">double</strong> currentScaledDiff;
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> 
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>     
-<a class="jxr_linenumber" name="L236" href="#L236">236</a> }
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>         Range datasetRangeCheck = Ranges.range(0,data.size());
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_comment">//Set color scheme</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">if</strong>(valueColorSchemeInstance == <strong class="jxr_keyword">null</strong> || datasetRange == <strong class="jxr_keyword">null</strong> || datasetRange != datasetRangeCheck){
+<a class="jxr_linenumber" name="L210" href="#L210">210</a>             datasetRange = datasetRangeCheck;
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>             valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>         }
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <em class="jxr_comment">//Draw a line for each set of data in the data array.</em>
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">for</strong>(<strong class="jxr_keyword">int</strong> datasetNumber = 0; datasetNumber &lt; data.size(); datasetNumber++){
+<a class="jxr_linenumber" name="L215" href="#L215">215</a>             SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getXValues());
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>             ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());        
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             setClip(g);
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>             g.setColor(<strong class="jxr_keyword">new</strong> Color(valueColorSchemeInstance.colorFor((<strong class="jxr_keyword">double</strong>)datasetNumber)));
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>             drawValueExplicitLine(xValues, yValues, interpolation, reduction);
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>         }
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>     }
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> 
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>     @Override
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> processScaledValue(<strong class="jxr_keyword">int</strong> index, <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">double</strong> valueY, <strong class="jxr_keyword">double</strong> scaledX, <strong class="jxr_keyword">double</strong> scaledY) {
+<a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">if</strong> (focusPixelX != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L226" href="#L226">226</a>             <strong class="jxr_keyword">double</strong> scaledDiff = Math.abs(scaledX - focusPixelX);
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>             <strong class="jxr_keyword">if</strong> (scaledDiff &lt; currentScaledDiff) {
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>                 currentIndex = index;
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>                 currentScaledDiff = scaledDiff;
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>             }
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>         }
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     }
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> currentIndex;
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">double</strong> currentScaledDiff;
+<a class="jxr_linenumber" name="L236" href="#L236">236</a> 
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>     
+<a class="jxr_linenumber" name="L238" href="#L238">238</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015. All rights reserved.</div>

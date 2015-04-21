@@ -42,6 +42,7 @@ org.diirt.graphene.profile.impl
 org.diirt.graphene.profile.io
 org.diirt.graphene.profile.settings
 org.diirt.graphene.profile.utils
+org.diirt.javafx.graphene
 org.diirt.javafx.tools
 org.diirt.javafx.util
 org.diirt.pods.common
